@@ -191,8 +191,8 @@ healthcheck(callback) {
             return callback(data, error);
         }
 
-        if (data && Object.prototype.hasOwnProperty.call(data, 'body')) {
-            let body = JSON.parse(results.body);
+        if (data) {//&& Object.prototype.hasOwnProperty.call(data, 'body')) {
+            let body = JSON.parse(data);
             let ticketsArray = body.result;
 
             ticketsArray.forEach((ticket, index) => {
@@ -228,8 +228,8 @@ healthcheck(callback) {
             return callback(data, error);
         }
 
-        if (data && Object.prototype.hasOwnProperty.call(data, 'body')) {
-            let body = JSON.parse(results.body);
+        if (data) { //&& Object.prototype.hasOwnProperty.call(data, 'body')) {
+            let body = JSON.parse(data);
             let ticket = body.result;
 
             let modifiedTicket = modifyChangeTicket(ticket);

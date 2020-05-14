@@ -110,6 +110,8 @@ class ServiceNowConnector {
      * This function must not check for a hibernating instance;
      * it must call function isHibernating.
      */
+     console.log(response);
+     console.log(body);
      let callbackData = null;
      let callbackError = null;
 
@@ -123,7 +125,7 @@ class ServiceNowConnector {
         callbackError = 'Service Now instance is hibernating';
         console.error(callbackError);
       } else {
-        callbackData = response;
+        callbackData = body;
       }
       return callback(callbackData, callbackError);
     }
@@ -145,7 +147,6 @@ class ServiceNowConnector {
   get(callback) {
     let getCallOptions = { ...this.options };
     getCallOptions.method = 'GET';
-    getCallOptions.query = 'sysparm_limit=1';
     this.sendRequest(getCallOptions, (results, error) => callback(results, error));
   }
 
