@@ -115,7 +115,7 @@ healthcheck(callback) {
        * for the callback's errorMessage parameter.
        */
       this.emitOffline();
-      if (callback) callback(result, error);
+      callback(result, error);
     } else {
       /**
        * Write this block.
@@ -128,7 +128,7 @@ healthcheck(callback) {
        * responseData parameter.
        */
       this.emitOnline();
-      if (callback) callback(result, error);
+      callback(result, error);
     }
   });
  }
@@ -186,25 +186,7 @@ healthcheck(callback) {
      * Note how the object was instantiated in the constructor().
      * get() takes a callback function.
      */
-    this.connector.get((data, error) => {
-        if (error) {
-            return callback(data, error);
-        }
-
-        if (data && Object.prototype.hasOwnProperty.call(data, 'body')) {
-            let body = JSON.parse(results.body);
-            let ticketsArray = body.result;
-
-            ticketsArray.forEach((ticket, index) => {
-                const modifiedTicket = modifyChangeTicket(ticket);
-                ticketsArray[index] = modifiedTicket;
-            });
-
-            return callback(ticketsArray, error);
-        }
-
-        return callback(data, error);
-    });
+    this.connector.get(callback);
   }
 
   /**
@@ -223,34 +205,8 @@ healthcheck(callback) {
      * Note how the object was instantiated in the constructor().
      * post() takes a callback function.
      */
-    this.connector.post((data, error) => {
-        if (error) {
-            return callback(data, error);
-        }
-
-        if (data && Object.prototype.hasOwnProperty.call(data, 'body')) {
-            let body = JSON.parse(results.body);
-            let ticket = body.result;
-
-            let modifiedTicket = modifyChangeTicket(ticket);
-
-            return callback(modifiedTicket, error);
-        }
-
-        return callback(data, error);
-    });
+    this.connector.post(callback);
   }
-}
-
-function modifyChangeTicket(ticket) {
-    const { number, active, priority, description, work_start, work_end, sys_id } = ticket;
-    const modifiedTicket = {
-        active, priority, description, work_start, work_end,
-        change_ticket_number: number,
-        change_ticket_key: sys_id
-    };
-
-    return modifiedTicket;
 }
 
 module.exports = ServiceNowAdapter;
